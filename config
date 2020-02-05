@@ -1,0 +1,314 @@
+#################################################################################
+##                                                                             ##
+##   THIS IS MY I3 CONFIG FILE. THERE ARE MANY LIKE IT BUT THIS ONE IS MINE.   ##
+##                                                                             ##
+#################################################################################
+
+
+#############################
+###   Basic Definitions   ###
+#############################
+
+##   Appearance   ##
+
+hide_edge_borders both
+for_window [class="^.*"] border pixel 1
+gaps inner 8
+gaps outer 0
+font pango:hack 10
+
+##   Autostart   ##
+
+exec --no-startup-id $browser
+exec --no-startup-id nm-applet
+exec --no-startup-id compton --config $HOME/.config/i3/compton.conf
+exec --no-startup-id wal -R 
+exec --no-startup-id thunar
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+
+##   Scratchpad   ##
+exec --no-startup-id $term --name dropdown
+for_window [instance="dropdown"] floating enable 
+for_window [instance="dropdown"] resize set 1291 500 
+for_window [instance="dropdown"] move scratchpad; [instance="dropdown"] scratchpad show; move position 39px 27px; resize grow width 0px; move scratchpad
+for_window [instance="dropdown"] border pixel 0
+bindsym $mod+grave [instance="dropdown"] scratchpad show
+
+exec --no-startup-id $term --name ranger -e "ranger"
+for_window [instance="ranger"] floating enable
+for_window [instance="ranger"] resize set 600 300
+for_window [instance="ranger"] move scratchpad; [instance="ranger"] scratchpad show; move position 766px 468px; resize grow width -1px; resize grow height -1px; move scratchpad
+for_window [instance="ranger"] border pixel 2
+bindsym $mod+e [instance="ranger"] scratchpad show
+
+##   Floating   ##
+exec --no-startup-id wpg
+for_window [class="Wpg"] floating enable; resize set 800 600; move scratchpad; move position center
+bindsym $mod+F7 [class="Wpg"] scratchpad show
+
+##   Defaults   ##
+
+set $mod Mod4
+floating_modifier $mod
+set $term kitty 
+set $browser firefox
+set $email thunderbird
+set $locker $HOME/.scripts/pixelock.sh
+set $HOME /home/vide0hanz
+
+#######################
+###    Status Bar   ###
+#######################
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+#bar {
+#        status_command i3blocks -c $HOME/.config/i3/i3blocks
+#	position bottom
+#	i3bar_command i3bar -t
+#	separator_symbol ""  
+#	height 24
+#
+#
+#colors {
+#separator		 #444444
+#background		 $bg+
+#statusline		 #FFFFFF
+#focused_workspace	 $bg $bg #000000
+#active_workspace	 #333333 #333333 #888888
+#inactive_workspace	 #CECECE #333333 #f1f1f1
+#urgent_workspace	 #eb709b #eb709b #ffffff
+#	}
+#}
+
+##################
+###   Colors   ###
+##################
+
+# Set colors from Xresources
+# Change 'color7' and 'color2' to whatever colors you want i3 to use 
+# from the generated scheme.
+# NOTE: The '#f0f0f0' in the lines below is the color i3 will use if
+# it fails to get colors from Xresources.
+set_from_resource $fg i3wm.color7 #f0f0f0
+set_from_resource $bg i3wm.color2 #f0f0f0
+set_from_resource $bg+ i3wm.color0 #f0f0f0
+
+# class                 border  backgr. text indicator child_border
+client.focused          $bg     $bg     $fg  $bg       $bg
+#client.focused_inactive $bg     $bg     $fg  $bg       $bg
+#client.unfocused        $bg     $bg     $fg  $bg       $bg
+client.urgent           $bg     $bg     $fg  $bg       $bg
+client.placeholder      $bg     $bg     $fg  $bg       $bg
+
+client.background       $bg
+
+
+######################
+###   Workspaces   ###
+######################
+
+set $ws1 "1" 
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+assign [class="Thunar"] $ws2
+assign [class="firefox"] $ws7
+assign [class="Gimp-2.10"] $ws8
+assign [class="Steam"] $ws10
+
+for_window [title="GIMP Startup"] move workspace $ws8
+for_window [class="Gimp"] move workspace $ws8
+
+
+
+bindsym $mod+Home		workspace $ws1
+bindsym $mod+Shift+Home		move container to workspace $ws1
+bindsym $mod+End		workspace $ws10
+bindsym $mod+Shift+End		move container to workspace $ws10
+bindsym $mod+Prior		workspace prev
+bindsym $mod+Shift+Prior	move container to workspace prev
+bindsym $mod+Next		workspace next
+bindsym $mod+Shift+Next		move container to workspace next
+bindsym $mod+Tab		workspace back_and_forth
+bindsym $mod+XF86Back		workspace prev
+bindsym $mod+Shift+XF86Back	move container to workspace prev
+bindsym $mod+XF86Forward	workspace next
+bindsym $mod+Shift+XF86Forward	move container to workspace next
+bindsym $mod+semicolon		workspace next
+bindsym $mod+apostrophe		split horizontal ;; exec $term
+bindsym $mod+slash		split vertical ;; exec $term
+bindsym $mod+Shift+slash	kill
+bindsym $mod+backslash		workspace back_and_forth
+
+# switch to workspace (numbers)
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# move focused container to workspace (numbers)
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+########################
+###   Key Bindings   ###
+########################
+
+##   General   ##
+bindsym $mod+Return exec --no-startup-id $term
+bindsym $mod+q kill
+bindsym Menu exec --no-startup-id rofi -show drun -location 1 -xoffset 4 -yoffset 32 -width 25 -lines 10 -kb-cancel Menu
+bindsym $mod+f fullscreen toggle
+bindsym $mod+x exec --no-startup-id $HOME/.scripts/pixelock.sh
+#bindsym $mod+e exec --no-startup-id $term -e "ranger"
+bindsym $mod+Shift+e exec --no-startup-id thunar 
+bindsym $mod+Insert exec --no-startup-id $term -e "vim" $HOME/.config/i3/config
+bindsym $mod+Shift+Insert exec --no-startup-id $term -e "vim" $HOME/.config/polybar/config
+bindsym $mod+Mod1+Insert exec --no-startup-id $term -e "vim" $HOME/.config/i3/compton.conf
+bindsym --release Print exec --no-startup-id scrot -e 'mv $f $HOME/screenshots/'
+
+##   Applications   ##
+bindsym $mod+Shift+b workspace $ws7 exec --no-startup-id $browser
+bindsym $mod+Mod1+b workspace $ws7 exec --no-startup-id $browser --private-window
+bindsym $mod+b workspace $ws7
+bindsym $mod+Shift+m exec --no-startup-id $email
+bindsym F7 exec --no-startup-id $HOME/.scripts/colorscheme-picker
+bindsym $mod+Shift+g workspace $ws8 exec --no-startup-id gimp
+bindsym $mod+g workspace $ws8
+bindsym XF86Launch1 exec --no-startup-id sudo tlpui
+
+# reload the configuration file
+	bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+	bindsym $mod+Shift+r restart
+
+##   Volume Controls   ##
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioMute exec --no-startup-id amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
+
+##   Media Player Controls   ###
+bindsym XF86AudioPlay exec playerctl play
+bindsym XF86AudioPause exec playerctl pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+##   Screen brightness controls   ##
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10 && pkill -RTMIN+1 i3blocks
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10 && pkill -RTMIN+1 i3blocks
+
+##   Window Behavior   ###
+
+# toggle tiling / floating
+	bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+	bindsym $mod+space focus mode_toggle
+
+# change focus #
+	bindsym $mod+h focus left
+	bindsym $mod+j focus down
+	bindsym $mod+k focus up
+	bindsym $mod+l focus right
+
+# change focus with cursor keys #
+	bindsym $mod+Left focus left
+	bindsym $mod+Down focus down
+	bindsym $mod+Up focus up
+	bindsym $mod+Right focus right
+
+# move focused window #
+	bindsym $mod+Shift+h move left
+	bindsym $mod+Shift+j move down
+	bindsym $mod+Shift+k move up
+	bindsym $mod+Shift+l move right
+
+# change focus with cursor keys #
+	bindsym $mod+Shift+Left move left
+	bindsym $mod+Shift+Down move down
+	bindsym $mod+Shift+Up move up
+	bindsym $mod+Shift+Right move right
+
+# change container layout (stacked, tabbed, toggle split) #
+#	bindsym $mod+s layout stacking
+#	bindsym $mod+w layout tabbed
+#	bindsym $mod+e layout toggle split
+	
+# focus the parent container #
+#	bindsym $mod+a focus parent
+
+# focus the child container #
+#	bindsym $mod+d focus child
+
+# resize window (you can also use the mouse for that) #
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        	bindsym h resize shrink width 10 px or 10 ppt
+        	bindsym j resize grow height 10 px or 10 ppt
+        	bindsym k resize shrink height 10 px or 10 ppt
+        	bindsym l resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        	bindsym Left resize shrink width 10 px or 10 ppt
+        	bindsym Down resize grow height 10 px or 10 ppt
+        	bindsym Up resize shrink height 10 px or 10 ppt
+        	bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        	bindsym Return mode "default"
+        	bindsym Escape mode "default"
+        	bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+set $mode_system Just what do you think you're doing, Dave?
+mode "$mode_system" {
+    bindsym Shift+l exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $Locker && sudo systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $Locker && sudo systemctl hibernate, mode "default"
+    bindsym Shift+r exec --no-startup-id sudo systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id sudo systemctl poweroff -i, mode "default"  
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Shift+Escape mode "$mode_system"
+
+
+
+
+###   TESTING   ###
+
+
+
